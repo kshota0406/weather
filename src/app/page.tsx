@@ -12,6 +12,8 @@ const dummyWeatherData: WeatherData = {
   current: {
     temp: 23,
     feels_like: 21,
+    temp_min: 15,
+    temp_max: 23,
     humidity: 65,
     pressure: 1013,
     wind_speed: 5,
@@ -19,124 +21,159 @@ const dummyWeatherData: WeatherData = {
     visibility: 10000,
   },
   daily: [
-    { 
+    {
       dt: 1708003200,
-      main: { 
-        temp: 23,
-        feels_like: 21,
-        temp_min: 15,
-        temp_max: 23,
-        pressure: 1013,
-        humidity: 65
+      temp: {
+        day: 23,
+        min: 15,
+        max: 23,
+        night: 17,
+        eve: 21,
+        morn: 16
       },
+      feels_like: {
+        day: 21,
+        night: 16,
+        eve: 20,
+        morn: 15
+      },
+      pressure: 1013,
+      humidity: 65,
       weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind: { speed: 5, deg: 180 },
-      visibility: 10000,
-      clouds: { all: 0 },
-      pop: 0,
-      dt_txt: "2024-02-19 12:00:00"
+      wind_speed: 5,
+      visibility: 10000
     },
-    { 
+    {
       dt: 1708089600,
-      main: { 
-        temp: 22,
-        feels_like: 20,
-        temp_min: 14,
-        temp_max: 22,
-        pressure: 1012,
-        humidity: 70
+      temp: {
+        day: 22,
+        min: 14,
+        max: 22,
+        night: 16,
+        eve: 20,
+        morn: 15
       },
+      feels_like: {
+        day: 20,
+        night: 15,
+        eve: 19,
+        morn: 14
+      },
+      pressure: 1012,
+      humidity: 70,
       weather: [{ id: 802, main: "Clouds", description: "曇り", icon: "02d" }],
-      wind: { speed: 4, deg: 190 },
-      visibility: 10000,
-      clouds: { all: 40 },
-      pop: 0.1,
-      dt_txt: "2024-02-20 12:00:00"
+      wind_speed: 4,
+      visibility: 10000
     },
-    { 
+    {
       dt: 1708176000,
-      main: { 
-        temp: 21,
-        feels_like: 19,
-        temp_min: 13,
-        temp_max: 21,
-        pressure: 1010,
-        humidity: 75
+      temp: {
+        day: 21,
+        min: 13,
+        max: 21,
+        night: 15,
+        eve: 19,
+        morn: 14
       },
+      feels_like: {
+        day: 19,
+        night: 14,
+        eve: 18,
+        morn: 13
+      },
+      pressure: 1010,
+      humidity: 75,
       weather: [{ id: 501, main: "Rain", description: "雨", icon: "10d" }],
-      wind: { speed: 6, deg: 200 },
-      visibility: 8000,
-      clouds: { all: 80 },
-      pop: 0.6,
-      dt_txt: "2024-02-21 12:00:00"
+      wind_speed: 6,
+      visibility: 8000
     },
-    { 
+    {
       dt: 1708262400,
-      main: { 
-        temp: 24,
-        feels_like: 22,
-        temp_min: 16,
-        temp_max: 24,
-        pressure: 1015,
-        humidity: 60
+      temp: {
+        day: 24,
+        min: 16,
+        max: 24,
+        night: 18,
+        eve: 22,
+        morn: 17
       },
+      feels_like: {
+        day: 22,
+        night: 17,
+        eve: 21,
+        morn: 16
+      },
+      pressure: 1015,
+      humidity: 60,
       weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind: { speed: 3, deg: 170 },
-      visibility: 10000,
-      clouds: { all: 0 },
-      pop: 0,
-      dt_txt: "2024-02-22 12:00:00"
+      wind_speed: 3,
+      visibility: 10000
     },
-    { 
+    {
       dt: 1708348800,
-      main: { 
-        temp: 25,
-        feels_like: 23,
-        temp_min: 17,
-        temp_max: 25,
-        pressure: 1014,
-        humidity: 65
+      temp: {
+        day: 25,
+        min: 17,
+        max: 25,
+        night: 19,
+        eve: 23,
+        morn: 18
       },
+      feels_like: {
+        day: 23,
+        night: 18,
+        eve: 22,
+        morn: 17
+      },
+      pressure: 1014,
+      humidity: 65,
       weather: [{ id: 802, main: "Clouds", description: "曇り", icon: "02d" }],
-      wind: { speed: 4, deg: 180 },
-      visibility: 10000,
-      clouds: { all: 30 },
-      pop: 0.2,
-      dt_txt: "2024-02-23 12:00:00"
+      wind_speed: 4,
+      visibility: 10000
     },
-    { 
+    {
       dt: 1708435200,
-      main: { 
-        temp: 23,
-        feels_like: 21,
-        temp_min: 15,
-        temp_max: 23,
-        pressure: 1013,
-        humidity: 65
+      temp: {
+        day: 23,
+        min: 15,
+        max: 23,
+        night: 17,
+        eve: 21,
+        morn: 16
       },
+      feels_like: {
+        day: 21,
+        night: 16,
+        eve: 20,
+        morn: 15
+      },
+      pressure: 1013,
+      humidity: 65,
       weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind: { speed: 5, deg: 190 },
-      visibility: 10000,
-      clouds: { all: 0 },
-      pop: 0,
-      dt_txt: "2024-02-24 12:00:00"
+      wind_speed: 5,
+      visibility: 10000
     },
-    { 
+    {
       dt: 1708521600,
-      main: { 
-        temp: 22,
-        feels_like: 20,
-        temp_min: 14,
-        temp_max: 22,
-        pressure: 1011,
-        humidity: 75
+      temp: {
+        day: 22,
+        min: 14,
+        max: 22,
+        night: 16,
+        eve: 20,
+        morn: 15
       },
+      feels_like: {
+        day: 20,
+        night: 15,
+        eve: 19,
+        morn: 14
+      },
+      pressure: 1011,
+      humidity: 75,
       weather: [{ id: 501, main: "Rain", description: "雨", icon: "10d" }],
-      wind: { speed: 7, deg: 200 },
-      visibility: 7000,
-      clouds: { all: 90 },
-      pop: 0.7,
-      dt_txt: "2024-02-25 12:00:00"
+      wind_speed: 7,
+      visibility: 7000
     },
   ],
 };

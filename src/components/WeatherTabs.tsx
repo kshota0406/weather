@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TabType } from '../types/weather';
-import { TABS } from '../constants/weather';
+import { TABS, Tab } from '../constants/weather';
 
 type WeatherTabsProps = {
   activeTab: TabType;
@@ -11,10 +11,10 @@ type WeatherTabsProps = {
 export const WeatherTabs: React.FC<WeatherTabsProps> = ({ activeTab, onTabChange }) => {
   return (
     <div className="flex gap-2 mb-4">
-      {TABS.map((tab) => (
+      {TABS.map((tab: Tab) => (
         <motion.button
           key={tab.id}
-          onClick={() => onTabChange(tab.id as TabType)}
+          onClick={() => onTabChange(tab.id)}
           className={`px-3 py-1 rounded-full text-sm ${
             activeTab === tab.id
               ? 'bg-blue-500 text-white'
@@ -28,4 +28,4 @@ export const WeatherTabs: React.FC<WeatherTabsProps> = ({ activeTab, onTabChange
       ))}
     </div>
   );
-}; 
+};

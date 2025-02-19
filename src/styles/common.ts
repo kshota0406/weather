@@ -25,4 +25,4 @@ export const iconButtonLight: SxProps<Theme> = {
 
 export const compactPadding: SxProps<Theme> = {
   padding: 1,
-}; 
+};

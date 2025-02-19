@@ -1,81 +1,94 @@
-export type WeatherType = 'Clear' | 'Clouds' | 'Rain' | 'few clouds';
+import { ReactNode } from 'react';
 
+// 天気の種類の定義
+export type WeatherType = 
+  | 'Clear'     // 晴れ
+  | 'Clouds'    // 曇り
+  | 'Rain'      // 雨
+  | 'Drizzle'   // 霧雨
+  | 'Thunderstorm' // 雷雨
+  | 'Snow'      // 雪
+  | 'Mist'      // 靄
+  | 'Fog'       // 霧
+  | 'Haze'      // もや
+  | 'Dust'      // 砂塵
+  | 'Smoke'     // 煙
+  | 'Sand'      // 砂
+  | 'Ash'       // 火山灰
+  | 'Squall'    // スコール
+  | 'Tornado';  // 竜巻
+
+// 天気詳細の種類
 export type WeatherDetailId = 'humidity' | 'wind_speed' | 'pressure' | 'visibility';
 
+// 天気詳細の定義
 export type WeatherDetail = {
   id: WeatherDetailId;
   label: string;
   unit: string;
   defaultValue: number;
-  icon: (size: number) => React.ReactNode;
+  icon: (size: number) => ReactNode;
   valueConverter?: (value: number) => number;
 };
 
-export type WeatherResponse = {
-  cod: string;
-  message: number;
-  cnt: number;
-  list: WeatherForecastItem[];
-  city: {
-    id: number;
-    name: string;
-    coord: {
-      lat: number;
-      lon: number;
-    };
-    country: string;
-    timezone: number;
-    sunrise: number;
-    sunset: number;
-  };
+// 天気情報の定義
+export type WeatherInfo = {
+  id: number;
+  main: WeatherType;
+  description: string;
+  icon: string;
 };
 
-export type WeatherForecastItem = {
+// 気温情報の定義
+export type Temperature = {
+  day: number;
+  min: number;
+  max: number;
+  night: number;
+  eve: number;
+  morn: number;
+};
+
+// 体感温度の定義
+export type FeelsLike = {
+  day: number;
+  night: number;
+  eve: number;
+  morn: number;
+};
+
+// 日別天気情報の定義
+export type DailyWeather = {
   dt: number;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-  };
-  weather: Array<{
-    id: number;
-    main: WeatherType;
-    description: string;
-    icon: string;
-  }>;
-  clouds: {
-    all: number;
-  };
-  wind: {
-    speed: number;
-    deg: number;
-  };
+  temp: Temperature;
+  feels_like: FeelsLike;
+  pressure: number;
+  humidity: number;
+  weather: WeatherInfo[];
+  wind_speed: number;
   visibility: number;
-  pop: number;
-  dt_txt: string;
 };
 
+// 現在の天気情報の定義
+export type CurrentWeather = {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  humidity: number;
+  pressure: number;
+  wind_speed: number;
+  weather: WeatherInfo[];
+  visibility: number;
+};
+
+// 天気データの定義
 export type WeatherData = {
-  current: {
-    temp: number;
-    feels_like: number;
-    humidity: number;
-    pressure: number;
-    wind_speed: number;
-    weather: Array<{
-      id: number;
-      main: WeatherType;
-      description: string;
-      icon: string;
-    }>;
-    visibility: number;
-  };
-  daily: WeatherForecastItem[];
+  current: CurrentWeather;
+  daily: DailyWeather[];
 };
 
+// 予報日の定義
 export type ForecastDay = {
   date: string;
   weather: WeatherType;
@@ -84,8 +97,10 @@ export type ForecastDay = {
   icon: string;
 };
 
+// タブの種類の定義
 export type TabType = 'current' | 'details' | 'forecast';
 
+// 共通のコンポーネントプロパティ
 export interface WeatherComponentProps {
   compact?: boolean;
 } 

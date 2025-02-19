@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { WaterDrop, Air, Speed, Visibility } from '@mui/icons-material';
 import { 
   WbSunny,
@@ -10,10 +10,23 @@ import {
   Grain,
   FilterDrama
 } from '@mui/icons-material';
-import { WeatherDetail } from '../types/weather';
+import { WeatherDetail, TabType } from '../types/weather';
+
+// タブの型定義
+export type Tab = {
+  id: TabType;
+  label: string;
+};
+
+// タブの定義
+export const TABS: Tab[] = [
+  { id: 'current', label: '現在の天気' },
+  { id: 'details', label: '詳細情報' },
+  { id: 'forecast', label: '週間予報' },
+];
 
 // 天気アイコンの定義（OpenWeatherMap APIのアイコンコードに対応）
-export const WEATHER_ICONS: Record<string, React.ReactNode> = {
+export const WEATHER_ICONS: Record<string, ReactNode> = {
   // 晴れ
   '01d': <WbSunny sx={{ color: '#FFB300' }} />,
   '01n': <WbSunny sx={{ color: '#FFA000' }} />,
@@ -42,13 +55,6 @@ export const WEATHER_ICONS: Record<string, React.ReactNode> = {
   '50d': <Grain sx={{ color: '#B0BEC5' }} />,
   '50n': <Grain sx={{ color: '#90A4AE' }} />,
 };
-
-// タブの定義
-export const TABS = [
-  { id: 'current', label: '現在の天気' },
-  { id: 'details', label: '詳細情報' },
-  { id: 'forecast', label: '週間予報' },
-] as const;
 
 // 天気詳細の定義
 export const WEATHER_DETAILS: WeatherDetail[] = [
