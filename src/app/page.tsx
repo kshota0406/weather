@@ -1,209 +1,110 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IconButton } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import { SearchBar } from '../components/SearchBar';
 import { WeatherOverlay } from '../components/WeatherOverlay';
 import { WeatherData } from '../types/weather';
+import dummyWeatherData from '../data/weather.json';
 
-// ダミーの天気データ
-const dummyWeatherData: WeatherData = {
-  current: {
-    temp: 23,
-    feels_like: 21,
-    temp_min: 15,
-    temp_max: 23,
-    humidity: 65,
-    pressure: 1013,
-    wind_speed: 5,
-    weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-    visibility: 10000,
-  },
-  daily: [
-    {
-      dt: 1708003200,
-      temp: {
-        day: 23,
-        min: 15,
-        max: 23,
-        night: 17,
-        eve: 21,
-        morn: 16
+const API_KEY = 'YOUR_OPENWEATHER_API_KEY'; // ダミーのAPIキー
+const DEFAULT_LAT = 35.6895; // 東京の緯度
+const DEFAULT_LON = 139.6917; // 東京の経度
+
+async function fetchWeatherData(lat: number, lon: number): Promise<WeatherData> {
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${API_KEY}`
+    );
+    
+    if (!response.ok) {
+      throw new Error('Weather data fetch failed');
+    }
+
+    const data = await response.json();
+    return {
+      current: {
+        temp: Math.round(data.current.temp),
+        feels_like: Math.round(data.current.feels_like),
+        temp_min: Math.round(data.current.temp_min || data.daily[0].temp.min),
+        temp_max: Math.round(data.current.temp_max || data.daily[0].temp.max),
+        humidity: data.current.humidity,
+        pressure: data.current.pressure,
+        wind_speed: data.current.wind_speed,
+        weather: data.current.weather,
+        visibility: data.current.visibility,
       },
-      feels_like: {
-        day: 21,
-        night: 16,
-        eve: 20,
-        morn: 15
-      },
-      pressure: 1013,
-      humidity: 65,
-      weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind_speed: 5,
-      visibility: 10000
-    },
-    {
-      dt: 1708089600,
-      temp: {
-        day: 22,
-        min: 14,
-        max: 22,
-        night: 16,
-        eve: 20,
-        morn: 15
-      },
-      feels_like: {
-        day: 20,
-        night: 15,
-        eve: 19,
-        morn: 14
-      },
-      pressure: 1012,
-      humidity: 70,
-      weather: [{ id: 802, main: "Clouds", description: "曇り", icon: "02d" }],
-      wind_speed: 4,
-      visibility: 10000
-    },
-    {
-      dt: 1708176000,
-      temp: {
-        day: 21,
-        min: 13,
-        max: 21,
-        night: 15,
-        eve: 19,
-        morn: 14
-      },
-      feels_like: {
-        day: 19,
-        night: 14,
-        eve: 18,
-        morn: 13
-      },
-      pressure: 1010,
-      humidity: 75,
-      weather: [{ id: 501, main: "Rain", description: "雨", icon: "10d" }],
-      wind_speed: 6,
-      visibility: 8000
-    },
-    {
-      dt: 1708262400,
-      temp: {
-        day: 24,
-        min: 16,
-        max: 24,
-        night: 18,
-        eve: 22,
-        morn: 17
-      },
-      feels_like: {
-        day: 22,
-        night: 17,
-        eve: 21,
-        morn: 16
-      },
-      pressure: 1015,
-      humidity: 60,
-      weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind_speed: 3,
-      visibility: 10000
-    },
-    {
-      dt: 1708348800,
-      temp: {
-        day: 25,
-        min: 17,
-        max: 25,
-        night: 19,
-        eve: 23,
-        morn: 18
-      },
-      feels_like: {
-        day: 23,
-        night: 18,
-        eve: 22,
-        morn: 17
-      },
-      pressure: 1014,
-      humidity: 65,
-      weather: [{ id: 802, main: "Clouds", description: "曇り", icon: "02d" }],
-      wind_speed: 4,
-      visibility: 10000
-    },
-    {
-      dt: 1708435200,
-      temp: {
-        day: 23,
-        min: 15,
-        max: 23,
-        night: 17,
-        eve: 21,
-        morn: 16
-      },
-      feels_like: {
-        day: 21,
-        night: 16,
-        eve: 20,
-        morn: 15
-      },
-      pressure: 1013,
-      humidity: 65,
-      weather: [{ id: 800, main: "Clear", description: "晴れ", icon: "01d" }],
-      wind_speed: 5,
-      visibility: 10000
-    },
-    {
-      dt: 1708521600,
-      temp: {
-        day: 22,
-        min: 14,
-        max: 22,
-        night: 16,
-        eve: 20,
-        morn: 15
-      },
-      feels_like: {
-        day: 20,
-        night: 15,
-        eve: 19,
-        morn: 14
-      },
-      pressure: 1011,
-      humidity: 75,
-      weather: [{ id: 501, main: "Rain", description: "雨", icon: "10d" }],
-      wind_speed: 7,
-      visibility: 7000
-    },
-  ],
-};
+      daily: data.daily.map((day: {
+        dt: number;
+        temp: {
+          day: number;
+          min: number;
+          max: number;
+          night: number;
+          eve: number;
+          morn: number;
+        };
+        feels_like: {
+          day: number;
+          night: number;
+          eve: number;
+          morn: number;
+        };
+        pressure: number;
+        humidity: number;
+        weather: Array<{
+          id: number;
+          main: string;
+          description: string;
+          icon: string;
+        }>;
+        wind_speed: number;
+        visibility?: number;
+      }) => ({
+        dt: day.dt,
+        temp: {
+          day: Math.round(day.temp.day),
+          min: Math.round(day.temp.min),
+          max: Math.round(day.temp.max),
+          night: Math.round(day.temp.night),
+          eve: Math.round(day.temp.eve),
+          morn: Math.round(day.temp.morn),
+        },
+        feels_like: {
+          day: Math.round(day.feels_like.day),
+          night: Math.round(day.feels_like.night),
+          eve: Math.round(day.feels_like.eve),
+          morn: Math.round(day.feels_like.morn),
+        },
+        pressure: day.pressure,
+        humidity: day.humidity,
+        weather: day.weather,
+        wind_speed: day.wind_speed,
+        visibility: day.visibility || 10000,
+      })),
+    };
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    return dummyWeatherData as WeatherData; // エラー時はダミーデータを返す
+  }
+}
 
 export default function Home() {
-  const [city, setCity] = useState("東京");
-  const [weather, setWeather] = useState<WeatherData>(dummyWeatherData);
-  const [isLoading, setIsLoading] = useState(false);
+  const [weather, setWeather] = useState<WeatherData>(dummyWeatherData as WeatherData);
   const [showWeather, setShowWeather] = useState(true);
 
-  const handleSearch = () => {
-    setIsLoading(true);
-    // ダミーの非同期処理
-    setTimeout(() => {
-      setWeather(dummyWeatherData);
-      setIsLoading(false);
-    }, 800);
-  };
+  useEffect(() => {
+    const loadWeatherData = async () => {
+      const data = await fetchWeatherData(DEFAULT_LAT, DEFAULT_LON);
+      setWeather(data);
+    };
+
+    loadWeatherData();
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-gray-100">
       {/* ここに地図を表示する予定 */}
-      <div className="absolute top-4 left-4 z-10">
-        <SearchBar
-          city={city}
-          onCityChange={setCity}
-          onSearch={handleSearch}
-          isLoading={isLoading}
-        />
-      </div>
 
       {!showWeather && (
         <motion.div
@@ -228,7 +129,7 @@ export default function Home() {
 
       {showWeather && (
         <WeatherOverlay
-          city={city}
+          city="東京"
           weather={weather}
           onClose={() => setShowWeather(false)}
         />
